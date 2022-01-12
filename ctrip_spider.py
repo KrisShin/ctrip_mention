@@ -162,24 +162,25 @@ def run_spider():
         # executable_path="./drivers/chromedriver", options=options
     )
     mention_list = defaultdict(list)
-    for date in DATE_LIST:
-        page_html = init_driver(date, driver)
-        parse_html(date, page_html, mention_list)
+    for _date in DATE_LIST:
+        page_html = init_driver(_date, driver)
+        parse_html(_date, page_html, mention_list)
         sleep(10)
     driver.quit()
     global SEND_COUNT
     table_data = []
-    for date, lines in mention_list.items():
+    for _date, lines in mention_list.items():
         for line in lines:
-            table_data.append(f"| {date} | { ' | '.join(line.values()) } |")
+            table_data.append(f"| {_date} | { ' | '.join(line.values()) } |")
     if not table_data:
         return
+    today = str(date.today())
     with open('record', 'r') as fs:
         record = fs.read()
-        if str({TARGET_DATE: mention_list}) == reacord:
+        if str({today: mention_list}) == record:
             return
     with open('record', 'w') as fs:
-        fs.wirte(str({TARGET_DATE: mention_list}))
+        fs.write(str({today: mention_list}))
     r.post(
         WECHAT_MSG_URL,
         params={
