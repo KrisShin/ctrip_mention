@@ -174,6 +174,12 @@ def run_spider():
             table_data.append(f"| {date} | { ' | '.join(line.values()) } |")
     if not table_data:
         return
+    with open('record', 'r') as fs:
+        record = fs.read()
+        if str({TARGET_DATE: mention_list}) == reacord:
+            return
+    with open('record', 'w') as fs:
+        fs.wirte(str({TARGET_DATE: mention_list}))
     r.post(
         WECHAT_MSG_URL,
         params={
